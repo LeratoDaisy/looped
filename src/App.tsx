@@ -10,25 +10,60 @@
  * Type your data using src/data/types.ts. Load it via
  * src/data/items.ts (or reshape that — your call).
  * ============================================================ */
+// Avoid depending on react-router-dom in this minimal starter to prevent
+// "Cannot find module 'react-router-dom'" when the package isn't installed.
+// Implement a tiny, dependency-free router based on window.location.pathname.
+import { ITEMS } from "./data/items";
 
-import { ITEMS } from "./data/items.ts";
-
-export function App() {
+// Temporary pages (we will move these later)
+function HomePage() {
   return (
-    <main style={{ fontFamily: "system-ui, sans-serif", maxWidth: 720, margin: "0 auto", padding: 24 }}>
-      <h1>Founder Capstone — start here</h1>
-      <p>
-        Read <code>BRIEF.md</code> first. It is most of the assessment. Then delete
-        this file's contents and build the product.
-      </p>
-      <p>
-        There are <strong>{ITEMS.length}</strong> mock items wired up in{" "}
-        <code>src/data/items.ts</code>. Some have no photos, no price, no rating, or
-        are paused/removed. Handling those cases well is part of the craft score.
-      </p>
-      <p style={{ color: "#666" }}>
-        Do not ship this screen. This is scaffolding, not a starting design.
-      </p>
-    </main>
+    <div>
+      <h2>Home</h2>
+      <p>{ITEMS.length} items available</p>
+    </div>
   );
 }
+
+function ItemPage() {
+  return (
+    <div>
+      <h2>Item Detail</h2>
+    </div>
+  );
+}
+
+function BookingPage() {
+  return (
+    <div>
+      <h2>Booking</h2>
+    </div>
+  );
+}
+
+function LoginPage() {
+  return <h2>Login</h2>;
+}
+
+export function App() {
+  const path = typeof window !== "undefined" ? window.location.pathname : "/";
+
+  // Simple pattern matching for routes we need
+  if (path === "/") return <HomePage />;
+  if (path === "/login") return <LoginPage />;
+
+  const itemMatch = path.match(/^\/item\/(.+)$/);
+  if (itemMatch) return <ItemPage />;
+
+  const bookMatch = path.match(/^\/book\/(.+)$/);
+  if (bookMatch) return <BookingPage />;
+
+  // Fallback
+  return (
+    <div>
+      <h2>Not Found</h2>
+      <p>Path: {path}</p>
+    </div>
+  );
+}
+
