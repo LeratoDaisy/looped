@@ -14,50 +14,17 @@
 // "Cannot find module 'react-router-dom'" when the package isn't installed.
 // Implement a tiny, dependency-free router based on window.location.pathname.
 
-import { useState } from "react";
-import { ITEMS } from "./data/items";
-import { ItemCard } from "./components/ItemCard";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { HomePage } from "./pages/HomePage";
+import { ItemPage } from "./pages/ItemPage";
 
 export function App() {
-  const [search, setSearch] = useState("");
-
-  const availableItems = ITEMS.filter((item) => {
-    const isAvailable = item.status === "available";
-
-    const matchesSearch =
-      search.trim() === "" ||
-      item.title.toLowerCase().includes(search.toLowerCase()) ||
-      item.description.toLowerCase().includes(search.toLowerCase());
-
-    return isAvailable && matchesSearch;
-  });
-
   return (
-    <main style={{ padding: 24, fontFamily: "system-ui" }}>
-      <h1>Looped</h1>
-
-      <input
-        placeholder="Search items..."
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-        style={{
-          padding: 10,
-          width: "100%",
-          marginBottom: 20
-        }}
-      />
-
-      <div
-      style={{
-        display: "grid",
-        gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
-        gap: 16
-        }}
-        >
-          {availableItems.map((item) => (
-            <ItemCard key={item.id} item={item} />
-            ))}
-            </div>
-            </main>
-            );
-          }
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/item/:id" element={<ItemPage />} />
+      </Routes>
+    </BrowserRouter>
+  );
+}
