@@ -13,7 +13,7 @@
  * and to defend in your Decision Log.
  * ============================================================ */
 
-import type { Item } from "./types.ts";
+import type { Item } from "./types";
 
 export const ITEMS: Item[] = [
   {
@@ -119,5 +119,9 @@ export const ITEMS: Item[] = [
  * control yet. Use it or replace it — your call, but justify it.
  */
 export function fetchItems(): Promise<Item[]> {
-  return new Promise((resolve) => setTimeout(() => resolve(ITEMS), 400));
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve(ITEMS);
+    }, 300);
+  });
 }
