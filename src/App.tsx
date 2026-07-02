@@ -16,6 +16,7 @@
 
 import { useState } from "react";
 import { ITEMS } from "./data/items";
+import { ItemCard } from "./components/ItemCard";
 
 export function App() {
   const [search, setSearch] = useState("");
@@ -46,21 +47,17 @@ export function App() {
         }}
       />
 
-      <div style={{ display: "grid", gap: 12 }}>
-        {availableItems.map((item) => (
-          <div
-            key={item.id}
-            style={{
-              border: "1px solid #eee",
-              padding: 12,
-              borderRadius: 8
-            }}
-          >
-            <h3>{item.title}</h3>
-            <p>{item.description}</p>
-          </div>
-        ))}
-      </div>
-    </main>
-  );
-}
+      <div
+      style={{
+        display: "grid",
+        gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
+        gap: 16
+        }}
+        >
+          {availableItems.map((item) => (
+            <ItemCard key={item.id} item={item} />
+            ))}
+            </div>
+            </main>
+            );
+          }
