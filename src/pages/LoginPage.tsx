@@ -15,41 +15,71 @@ export function LoginPage() {
   };
 
   return (
-    <main
+    <div
       style={{
-        padding: 24,
-        fontFamily: "system-ui",
-        maxWidth: 400,
-        margin: "0 auto"
+        height: "100vh",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        background: "#0f172a", 
+        fontFamily: "system-ui"
       }}
     >
-      <h1>Looped</h1>
-      <p>Sign in to continue</p>
-
-      <input
-        placeholder="Enter email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
+      <div
         style={{
           width: "100%",
-          padding: 10,
-          marginBottom: 12
-        }}
-      />
-
-      <button
-        onClick={handleLogin}
-        style={{
-          width: "100%",
-          padding: 12,
-          background: "black",
-          color: "white",
-          border: "none",
-          cursor: "pointer"
+          maxWidth: 360,
+          padding: 28,
+          borderRadius: 16,
+          background: "white",
+          boxShadow: "0 10px 30px rgba(0,0,0,0.3)"
         }}
       >
-        Login
-      </button>
-    </main>
+        <h1 style={{ marginBottom: 6 }}>Looped</h1>
+        <p style={{ marginTop: 0, color: "#666", marginBottom: 20 }}>
+          Borrow. Share. Repeat.
+        </p>
+
+        <input
+          placeholder="Enter your email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          style={{
+            width: "100%",
+            padding: 12,
+            marginBottom: 12,
+            borderRadius: 8,
+            border: "1px solid #ddd"
+          }}
+        />
+
+        <button
+          onClick={handleLogin}
+          style={{
+            width: "100%",
+            padding: 12,
+            borderRadius: 8,
+            border: "none",
+            background: "#111827",
+            color: "white",
+            cursor: "pointer",
+            fontWeight: 600
+          }}
+        >
+          Sign in
+        </button>
+
+        <p
+          style={{
+            fontSize: 12,
+            marginTop: 12,
+            color: "#888",
+            textAlign: "center"
+          }}
+        >
+          By continuing you agree to community sharing rules
+        </p>
+      </div>
+    </div>
   );
 }

@@ -15,25 +15,20 @@
 // Implement a tiny, dependency-free router based on window.location.pathname.
 
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import { HomePage } from "./pages/HomePage";
 import { ItemPage } from "./pages/ItemPage";
 import { BookingPage } from "./pages/BookingPage";
 import { BookingConfirmPage } from "./pages/BookingConfirmPage";
-
-function LoginPage() {
-  return <div>Login</div>;
-}
+import { LoginPage } from "./pages/LoginPage";
 
 export function App() {
   const [isAuthed, setIsAuthed] = useState(false);
 
   useEffect(() => {
     const saved = localStorage.getItem("auth");
-    if (saved === "true") {
-      setIsAuthed(true);
-    }
+    setIsAuthed(saved === "true");
   }, []);
 
   return (
@@ -42,7 +37,7 @@ export function App() {
         {/* LOGIN */}
         <Route path="/login" element={<LoginPage />} />
 
-        {/* PROTECTED ROUTES */}
+        {/* DEFAULT ROUTE */}
         <Route
           path="/"
           element={isAuthed ? <HomePage /> : <Navigate to="/login" />}
@@ -64,6 +59,9 @@ export function App() {
             isAuthed ? <BookingConfirmPage /> : <Navigate to="/login" />
           }
         />
+
+        {/* fallback */}
+        <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </BrowserRouter>
   );
