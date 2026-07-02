@@ -1,8 +1,11 @@
 import { useParams } from "react-router-dom";
 import { ITEMS } from "../data/items";
+import { useNavigate } from "react-router-dom";
 
 export function ItemPage() {
   const { id } = useParams();
+
+  const navigate = useNavigate();
 
   const item = ITEMS.find((i) => i.id === id);
 
@@ -27,16 +30,18 @@ export function ItemPage() {
       <p>{item.owner.displayName}</p>
 
       <button
-        style={{
-          padding: 12,
-          background: "black",
-          color: "white",
-          border: "none",
-          marginTop: 20
+      onClick={() => navigate(`/book/${item.id}`)}
+      style={{
+        padding: 12,
+        background: "black",
+        color: "white",
+        border: "none",
+        marginTop: 20,
+        cursor: "pointer"
         }}
-      >
-        BOOK NOW
-      </button>
+        >
+            BOOK NOW
+        </button>
     </main>
   );
 }

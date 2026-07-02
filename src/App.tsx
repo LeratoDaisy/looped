@@ -15,15 +15,25 @@
 // Implement a tiny, dependency-free router based on window.location.pathname.
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+
 import { HomePage } from "./pages/HomePage";
 import { ItemPage } from "./pages/ItemPage";
+import { BookingPage } from "./pages/BookingPage";
+import { BookingConfirmPage } from "./pages/BookingConfirmPage";
 
 export function App() {
   return (
     <BrowserRouter>
       <Routes>
+        {/* Home / Marketplace */}
         <Route path="/" element={<HomePage />} />
+
+        {/* Item detail page */}
         <Route path="/item/:id" element={<ItemPage />} />
+
+        {/* Booking flow */}
+        <Route path="/book/:id" element={<BookingPage />} />
+        <Route path="/book/:id/confirm" element={<BookingConfirmPage />} />
       </Routes>
     </BrowserRouter>
   );
