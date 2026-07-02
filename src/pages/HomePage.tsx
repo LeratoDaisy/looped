@@ -67,6 +67,13 @@ export function HomePage() {
         </select>
       </div>
 
+      {availableItems.length === 0 && (
+        <div style={{ padding: 20, color: "#666" }}>
+          <h3>No items found</h3>
+          <p>Try adjusting your search or filters.</p>
+          </div>
+        )}
+
       {/* GRID */}
       <div
         style={{

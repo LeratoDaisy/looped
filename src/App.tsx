@@ -14,26 +14,56 @@
 // "Cannot find module 'react-router-dom'" when the package isn't installed.
 // Implement a tiny, dependency-free router based on window.location.pathname.
 
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { useState, useEffect } from "react";
 
 import { HomePage } from "./pages/HomePage";
 import { ItemPage } from "./pages/ItemPage";
 import { BookingPage } from "./pages/BookingPage";
 import { BookingConfirmPage } from "./pages/BookingConfirmPage";
 
+function LoginPage() {
+  return <div>Login</div>;
+}
+
 export function App() {
+  const [isAuthed, setIsAuthed] = useState(false);
+
+  useEffect(() => {
+    const saved = localStorage.getItem("auth");
+    if (saved === "true") {
+      setIsAuthed(true);
+    }
+  }, []);
+
   return (
     <BrowserRouter>
       <Routes>
-        {/* Home / Marketplace */}
-        <Route path="/" element={<HomePage />} />
+        {/* LOGIN */}
+        <Route path="/login" element={<LoginPage />} />
 
-        {/* Item detail page */}
-        <Route path="/item/:id" element={<ItemPage />} />
+        {/* PROTECTED ROUTES */}
+        <Route
+          path="/"
+          element={isAuthed ? <HomePage /> : <Navigate to="/login" />}
+        />
 
-        {/* Booking flow */}
-        <Route path="/book/:id" element={<BookingPage />} />
-        <Route path="/book/:id/confirm" element={<BookingConfirmPage />} />
+        <Route
+          path="/item/:id"
+          element={isAuthed ? <ItemPage /> : <Navigate to="/login" />}
+        />
+
+        <Route
+          path="/book/:id"
+          element={isAuthed ? <BookingPage /> : <Navigate to="/login" />}
+        />
+
+        <Route
+          path="/book/:id/confirm"
+          element={
+            isAuthed ? <BookingConfirmPage /> : <Navigate to="/login" />
+          }
+        />
       </Routes>
     </BrowserRouter>
   );
