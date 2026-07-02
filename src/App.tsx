@@ -13,57 +13,40 @@
 // Avoid depending on react-router-dom in this minimal starter to prevent
 // "Cannot find module 'react-router-dom'" when the package isn't installed.
 // Implement a tiny, dependency-free router based on window.location.pathname.
+
 import { ITEMS } from "./data/items";
-
-// Temporary pages (we will move these later)
-function HomePage() {
-  return (
-    <div>
-      <h2>Home</h2>
-      <p>{ITEMS.length} items available</p>
-    </div>
-  );
-}
-
-function ItemPage() {
-  return (
-    <div>
-      <h2>Item Detail</h2>
-    </div>
-  );
-}
-
-function BookingPage() {
-  return (
-    <div>
-      <h2>Booking</h2>
-    </div>
-  );
-}
-
-function LoginPage() {
-  return <h2>Login</h2>;
-}
+import { ItemCard } from "./components/ItemCard";
 
 export function App() {
-  const path = typeof window !== "undefined" ? window.location.pathname : "/";
+  const availableItems = ITEMS.filter(
+    (item) => item.status === "available"
+  );
 
-  // Simple pattern matching for routes we need
-  if (path === "/") return <HomePage />;
-  if (path === "/login") return <LoginPage />;
-
-  const itemMatch = path.match(/^\/item\/(.+)$/);
-  if (itemMatch) return <ItemPage />;
-
-  const bookMatch = path.match(/^\/book\/(.+)$/);
-  if (bookMatch) return <BookingPage />;
-
-  // Fallback
   return (
-    <div>
-      <h2>Not Found</h2>
-      <p>Path: {path}</p>
-    </div>
+    <main style={{ padding: 24, fontFamily: "system-ui" }}>
+      <h1>Looped</h1>
+      <p>Borrow what you need, from people nearby.</p>
+
+      <input
+        placeholder="Search items..."
+        style={{
+          padding: 10,
+          width: "100%",
+          marginBottom: 20
+        }}
+      />
+
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
+          gap: 16
+        }}
+      >
+        {availableItems.map((item) => (
+          <ItemCard key={item.id} item={item} />
+        ))}
+      </div>
+    </main>
   );
 }
-
