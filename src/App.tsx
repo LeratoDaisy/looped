@@ -24,30 +24,39 @@ import { BookingConfirmPage } from "./pages/BookingConfirmPage";
 import { LoginPage } from "./pages/LoginPage";
 
 export function App() {
-  const [isAuthed, setIsAuthed] = useState(false);
+  const [isAuthed, setIsAuthed] = useState(
+    localStorage.getItem("auth") === "true"
+  );
 
   useEffect(() => {
-    const saved = localStorage.getItem("auth");
-    setIsAuthed(saved === "true");
+    const handleStorageChange = () => {
+      setIsAuthed(localStorage.getItem("auth") === "true");
+    };
+
+    window.addEventListener("storage", handleStorageChange);
+    return () => window.removeEventListener("storage", handleStorageChange);
   }, []);
 
   return (
     <BrowserRouter>
       <Routes>
-        {/* LOGIN */}
+
+        {/* LOGIN (always accessible) */}
         <Route path="/login" element={<LoginPage />} />
 
-        {/* DEFAULT ROUTE */}
+        {/* HOME */}
         <Route
           path="/"
           element={isAuthed ? <HomePage /> : <Navigate to="/login" />}
         />
 
+        {/* ITEM DETAILS */}
         <Route
           path="/item/:id"
           element={isAuthed ? <ItemPage /> : <Navigate to="/login" />}
         />
 
+        {/* BOOKING FLOW */}
         <Route
           path="/book/:id"
           element={isAuthed ? <BookingPage /> : <Navigate to="/login" />}
@@ -60,8 +69,9 @@ export function App() {
           }
         />
 
-        {/* fallback */}
+        {/* FALLBACK */}
         <Route path="*" element={<Navigate to="/" />} />
+
       </Routes>
     </BrowserRouter>
   );
