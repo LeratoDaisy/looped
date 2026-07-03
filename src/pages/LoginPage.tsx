@@ -1,85 +1,42 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { useEffect, useState, type ReactNode } from "react";
+
+import { HomePage } from "./HomePage";
+import { ItemPage } from "./ItemPage";
+import { BookingPage } from "./BookingPage";
+import { BookingConfirmPage } from "./BookingConfirmPage";
 
 export function LoginPage() {
-  const [email, setEmail] = useState("");
-  const navigate = useNavigate();
+  return <div>Login</div>;
+}
 
-  const handleLogin = () => {
-    if (!email.trim()) return;
+export function App() {
+  const [isAuthed, setIsAuthed] = useState(false);
 
-    localStorage.setItem("auth", "true");
-    localStorage.setItem("email", email);
+  useEffect(() => {
+    const saved = localStorage.getItem("auth");
+    setIsAuthed(saved === "true");
+  }, []);
 
-    navigate("/");
+  const requireAuth = (element: React.ReactNode) => {
+    return isAuthed ? element : <Navigate to="/login" replace />;
   };
 
   return (
-    <div
-      style={{
-        height: "100vh",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        background: "#0f172a", 
-        fontFamily: "system-ui"
-      }}
-    >
-      <div
-        style={{
-          width: "100%",
-          maxWidth: 360,
-          padding: 28,
-          borderRadius: 16,
-          background: "white",
-          boxShadow: "0 10px 30px rgba(0,0,0,0.3)"
-        }}
-      >
-        <h1 style={{ marginBottom: 6 }}>Looped</h1>
-        <p style={{ marginTop: 0, color: "#666", marginBottom: 20 }}>
-          Borrow. Share. Repeat.
-        </p>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/login" element={<LoginPage />} />
 
-        <input
-          placeholder="Enter your email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          style={{
-            width: "100%",
-            padding: 12,
-            marginBottom: 12,
-            borderRadius: 8,
-            border: "1px solid #ddd"
-          }}
+        <Route path="/" element={requireAuth(<HomePage />)} />
+        <Route path="/item/:id" element={requireAuth(<ItemPage />)} />
+        <Route path="/book/:id" element={requireAuth(<BookingPage />)} />
+        <Route
+          path="/book/:id/confirm"
+          element={requireAuth(<BookingConfirmPage />)}
         />
 
-        <button
-          onClick={handleLogin}
-          style={{
-            width: "100%",
-            padding: 12,
-            borderRadius: 8,
-            border: "none",
-            background: "#111827",
-            color: "white",
-            cursor: "pointer",
-            fontWeight: 600
-          }}
-        >
-          Sign in
-        </button>
-
-        <p
-          style={{
-            fontSize: 12,
-            marginTop: 12,
-            color: "#888",
-            textAlign: "center"
-          }}
-        >
-          By continuing you agree to community sharing rules
-        </p>
-      </div>
-    </div>
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
